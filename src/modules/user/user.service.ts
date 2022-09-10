@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Model } from 'mongoose';
 import UserEntity from 'src/entities/user.entity';
+// import { KafkaProducerService } from 'src/kafka/producer/producer.service';
 import { RedisService } from 'src/redis/redis.service';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { Repository } from 'typeorm';
@@ -15,6 +16,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
     private redisService: RedisService,
+    // private producer: KafkaProducerService,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
   async create(createUserDto: CreateUserDto) {
@@ -31,7 +33,7 @@ export class UserService {
     //   user = await this.userModel.find();
     //   await this.redisService.set('user', user);
     // }
-
+    // this.producer.publish('__consumer_offsets', 'value ..........');
     let user = await this.redisService.get('user');
     if (!user) {
       console.log('loging ...');

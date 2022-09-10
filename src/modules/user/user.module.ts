@@ -8,6 +8,7 @@ import UserEntity from 'src/entities/user.entity';
 import { RedisModule } from 'src/redis/redis.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/schemas/user.schema';
+// import { KafkaProducerService } from 'src/kafka/producer/producer.service';
 
 @Module({
   imports: [
@@ -16,6 +17,10 @@ import { User, UserSchema } from 'src/schemas/user.schema';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UserController],
-  providers: [UserService, RedisService],
+  providers: [
+    UserService,
+    RedisService,
+    //  KafkaProducerService
+  ],
 })
 export class UserModule {}

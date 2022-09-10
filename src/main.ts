@@ -3,9 +3,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+// import { ConsumerModule } from './kafka/consumer/consumer.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   const config = new DocumentBuilder()
     .setTitle('Service example')
     .setDescription('The service API description')
@@ -13,26 +15,23 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  // const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-  //   AppModule,
+
+  app.useGlobalPipes(new ValidationPipe());
+  await app.listen(3000);
+  // const kafka = await NestFactory.createMicroservice<MicroserviceOptions>(
+  //   ConsumerModule,
   //   {
   //     transport: Transport.KAFKA,
   //     options: {
   //       client: {
-  //         brokers: [
-  //           // 'moped-01.srvs.cloudkafka.com:9094',
-  //           // 'moped-02.srvs.cloudkafka.com:9094',
-  //           // 'moped-03.srvs.cloudkafka.com:9094',
-  //           'pkc-ldvr1.asia-southeast1.gcp.confluent.cloud:9092',
-  //         ],
+  //         brokers: ['localhost:9092'],
   //       },
   //       consumer: {
-  //         groupId: 'billing-consumer',
+  //         groupId: 'service-consumer',
   //       },
   //     },
   //   },
   // );
-  app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  // kafka.listen();
 }
 bootstrap();

@@ -10,5 +10,8 @@ class UserEntity {
 
   @Column()
   lastName: string;
+
+  @Column()
+  test: string;
 }
 export default UserEntity;
