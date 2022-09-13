@@ -3,8 +3,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+// import { ConfigService } from '@nestjs/config';
 // import { ConsumerModule } from './kafka/consumer/consumer.module';
-
+// const configService = new ConfigService();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -17,7 +18,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  await app.listen(8000);
   // const kafka = await NestFactory.createMicroservice<MicroserviceOptions>(
   //   ConsumerModule,
   //   {

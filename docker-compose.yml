@@ -1,24 +1,77 @@
 version: '1.0'
 
 services:
-  main:
-    container_name: example
+  api:
+    container_name: nest-api
+    depends_on:
+      - redis
+      - postgres
+      - mongodb
     build:
       context: .
       target: development
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    environment:
+      - POSTGRES_HOST:postgres
+      - POSTGRES_PORT:5432
+      - POSTGRES_USERNAME:postgres
+      - POSTGRES_PASSWORD:postgres
+      - POSTGRES_DB:postgres
+      - MONGO_URL:mongodb//root:example@mongodata:27017/service?retryWrites=true&w=majority
+      - REDIS_HOST:redis
+      - REDIS_PORT:6379
+      - REDIS_USERNAME:default
+      - REDIS_PASSWORD:fbX4PgCelRue3exBCWFETglpCkrzehiB
+
     ports:
       # - ${SERVER_PORT}:${SERVER_PORT}
       - 3000:3000
     command: npm run start:dev
-    env_file:
-      - .env
-    networks:
-      - webnet
 
-networks:
-  webnet:
+    # env_file:
+    #   - .env
+    # networks:
+    #   - webnet
+  redis: # Name of container
+    image: redis
+    ports:
+      - 6379:6379
+    # environment:
+    #   - ALLOW_EMPTY_PASSWORD=yes
+
+    volumes:
+      - redis:/data
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    # networks:
+    #   - webnet
+    volumes:
+      - mongodata:/data/db
+# networks:
+#   webnet:
+# volumes:
+#   pgdata:
 volumes:
-  pgdata:
+  mongodata:
+  postgres:
+  redis:
+    driver: local
