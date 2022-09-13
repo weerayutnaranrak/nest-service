@@ -4,6 +4,7 @@ import { MongoModule } from './database/mongo.module';
 import { PostgresModule } from './database/postgres.module';
 import { UserModule } from './modules/user/user.module';
 // import { ConsumerModule } from './kafka/consumer/consumer.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { UserModule } from './modules/user/user.module';
     PostgresModule,
     MongoModule,
     UserModule,
+    ProductModule,
     // ConsumerModule,
   ],
   controllers: [],

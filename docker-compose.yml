@@ -13,34 +13,27 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    environment:
-      - POSTGRES_HOST:postgres
-      - POSTGRES_PORT:5432
-      - POSTGRES_USERNAME:postgres
-      - POSTGRES_PASSWORD:postgres
-      - POSTGRES_DB:postgres
-      - MONGO_URL:mongodb//root:example@mongodata:27017/service?retryWrites=true&w=majority
-      - REDIS_HOST:redis
-      - REDIS_PORT:6379
-      - REDIS_USERNAME:default
-      - REDIS_PASSWORD:fbX4PgCelRue3exBCWFETglpCkrzehiB
-
-    ports:
-      # - ${SERVER_PORT}:${SERVER_PORT}
-      - 3000:3000
-    command: npm run start:dev
-
     # env_file:
     #   - .env
-    # networks:
-    #   - webnet
-  redis: # Name of container
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT${POSTGRES_PORT}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - MONGO_URL=${MONGO_URL}
+      - REDIS_HOST:=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      # - REDIS_USERNAME:default
+      # - REDIS_PASSWORD:fbX4PgCelRue3exBCWFETglpCkrzehiB
+
+    ports:
+      - 3000:3000
+    command: npm run start:dev
+  redis:
     image: redis
     ports:
       - 6379:6379
-    # environment:
-    #   - ALLOW_EMPTY_PASSWORD=yes
-
     volumes:
       - redis:/data
   postgres:
@@ -62,14 +55,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - 27017:27017
-    # networks:
-    #   - webnet
     volumes:
       - mongodata:/data/db
-# networks:
-#   webnet:
-# volumes:
-#   pgdata:
 volumes:
   mongodata:
   postgres:

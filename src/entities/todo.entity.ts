@@ -10,5 +10,8 @@ class TodoEntity {
 
   @Column()
   lastName: string;
+
+  @Column()
+  test: string;
 }
 export default TodoEntity;

@@ -12,6 +12,9 @@ export class Todo {
   @Prop()
   description: string;
 
+  @Prop()
+  test: string;
+
   //   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'users' })
   //   user: User;
 }
